@@ -6,13 +6,13 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 class TrendPresenter(QtWidgets.QListWidgetItem):
-    def __init__(self, plotWidget, metricList, dataX, dataY, name):
+    def __init__(self, graphs, metricList, dataX, dataY, name):
         super().__init__()
         self.setText(name)
         self.setFlags(self.flags() | QtCore.Qt.ItemIsUserCheckable) # CZY TO POTRZEBNE
         self.setCheckState(QtCore.Qt.Checked)
 
-        self.plotWidget = plotWidget
+        self.plotWidget = graphs[0] # TEMPORARY
         self.metricList = metricList
         self.name = name
         self.color = globalConfig.setColor()
