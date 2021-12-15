@@ -28,22 +28,16 @@
        </widget>
       </item>
       <item>
-       <widget class="PlotWidget" name="graphWidget" native="true"/>
+       <layout class="QVBoxLayout" name="graphLayout"/>
       </item>
      </layout>
     </item>
     <item>
-     <widget class="QListWidget" name="metricList">
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>30</height>
-       </size>
-      </property>
-      <property name="flow">
-       <enum>QListView::LeftToRight</enum>
-      </property>
-     </widget>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QListWidget" name="metricList"/>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -105,14 +99,6 @@
    </property>
   </action>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>PlotWidget</class>
-   <extends>QWidget</extends>
-   <header>pyqtgraph</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>
