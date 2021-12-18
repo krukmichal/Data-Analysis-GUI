@@ -26,6 +26,3 @@ def test_reading_txt():
 
 
 
-
-    
-

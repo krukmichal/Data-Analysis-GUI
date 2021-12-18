@@ -1,20 +1,9 @@
-whichMetricsToShow = {
-        "arithmeticAverage" : True,
-        "median" : True,
-        "standardDeviation" : True,
-        "variance" : True
-        }
 
-metricName = {
-        "arithmeticAverage" : "Average",
-        "median" : "Median",
-        "standardDeviation" : "Standard Deviation",
-        "variance" : "Variance"
-        }
-
-precision = 4;
 color = ['r', 'b', 'g', 'y', 'c', 'k']
 currentColor = 0
+
+movingAverageN = 5
+movingAverageAlpha = 0.1
 
 def setColor():
     global currentColor
