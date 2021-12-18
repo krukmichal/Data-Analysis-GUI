@@ -1,10 +1,9 @@
 from PyQt5 import QtWidgets, uic, QtGui
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QHBoxLayout, QVBoxLayout, QListWidget, QMenu, QAction, QLabel
 from pyqtgraph import PlotWidget, plot
 import pyqtgraph as pg
 
-from presenter.trendPresenter import TrendPresenter
-from fileReader.fileReader import readFiles
+from presenter.mainWindow import MainWindow
 
 import sys
 import os
@@ -14,57 +13,15 @@ logging.basicConfig(level=logging.DEBUG)
 # TODO
 # wczytywanie plikow
 # pokazywanie pozycji kursora
-# wlaczanie/wylaczanie trendow
 # zapamietywanie srodowiska
 
 ## TREND_OBJECT = TREND_PLOT + TREND_ITEM 
 
-class MainWindow(QtWidgets.QMainWindow):
-
-    def __init__(self, *args, **kwargs):
-        super(MainWindow, self).__init__(*args, **kwargs)
-
-        uic.loadUi('view/mainwindow.ui', self)
-        #self.graphWidget.setBackground('w')
-        self.graphs = []
-        self.graphs.append(pg.PlotWidget())
-        self.graphLayout.addWidget(self.graphs[0])
-
-        self.actionBrowse.triggered.connect(self.browseFiles)
-        self.trendList.itemSelectionChanged.connect(self.handleItemSelectionChanged)
-        self.trendList.itemChanged.connect(self.handleItemChanged)
-        self.currentSelectedTrend = None
-
-    def handleItemSelectionChanged(self):
-        item = self.trendList.selectedItems()[0]
-        item.handleItemSelectionChanged()
-
-    def handleItemChanged(self, item):
-        item.handleItemChanged()
-
-    #TO DO -> what if many files chosen, wrong file format
-    def browseFiles(self):
-        fileDialogData = QFileDialog.getOpenFileNames(
-                parent=self,
-                caption='Select a data file',
-                )
-
-        for data in readFiles(fileDialogData[0]):
-            logging.debug(data)
-            trendPresenter = TrendPresenter(
-                    self.graphs,
-                    self.metricList,
-                    data[1], # X
-                    data[2], # Y
-                    data[0]  # Z
-                    )
-            self.trendList.addItem(trendPresenter)
-
-        self.trendList.setCurrentRow(self.trendList.count()-1)
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
     main = MainWindow()
+    main.resize(800, 450)
     main.show()
     sys.exit(app.exec_())
 
