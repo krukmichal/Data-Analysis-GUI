@@ -31,8 +31,6 @@ def calcEMA(Y,N,alpha):
 
     return newY
 
- 
-
 def calcSMA(Y, N):
     newY = np.cumsum(Y, dtype = float)
     newY[N:] = newY[N:] - newY[:-N]
@@ -40,4 +38,13 @@ def calcSMA(Y, N):
     newY[:N-1] = Y[:N-1]
     return newY
 
+def removePeaks(Y, threshold):
+    newY = np.array(Y, dtype=float)
+    for i in range(1, len(newY)-1):
+        diff = min(abs(newY[i] - newY[i-1]), abs(newY[i+1] - newY[i]))
+        if diff > threshold:
+            newY[i] = (newY[i+1] + newY[i-1]) / 2
 
+    return newY
+
+        

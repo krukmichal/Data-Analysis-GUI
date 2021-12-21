@@ -26,5 +26,11 @@ def test_ema1():
     for i in range(len(tY)):
         tY[i] = np.around(tY[i],2)
 
-
     assert np.all(tY == [1, 2.33, 2.33, 3.33])
+
+def test_removePeaks0():
+    Y = [0,1,2,3,4,5,4,22,5]
+    tY = removePeaks(Y, 11)
+
+    assert np.all(tY == [0,1,2,3,4,5,4,4.5,5])
+
