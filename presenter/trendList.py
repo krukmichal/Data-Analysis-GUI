@@ -25,7 +25,6 @@ class TrendList(QListWidget):
             if item is not None:
                 menu = TrendMenu(self, item)
                 menu.exec_(event.globalPos())
-                print('test')
 
             return True;
 
@@ -37,15 +36,22 @@ class TrendList(QListWidget):
         self.setCurrentRow(self.count()-1)
 
     def createSMAItem(self, item):
-        Y = transforms.calcSMA(item.trendModel.dataY, 3)
+        Y = transforms.calcSMA(item.trendModel.dataY, 20)
         name = item.name + "-SMA"
         self.addTrendItem(item.trendModel.dataX.copy(), Y, name)
 
     def createEMAItem(self, item):
-        alpha = 0.5
-        Y = transforms.calcEMA(item.trendModel.dataY, 4, alpha)
+        alpha = 0.1
+        Y = transforms.calcEMA(item.trendModel.dataY, 20, alpha)
         name = item.name + "-EMA"
         self.addTrendItem(item.trendModel.dataX.copy(), Y, name)
+
+    def createRemovePeaksItem(self, item):
+        threshold = 1.7
+        Y = transforms.removePeaks(item.trendModel.dataY, threshold)
+        name = item.name + "-RP"
+        self.addTrendItem(item.trendModel.dataX.copy(), Y, name)
+
 
 
 

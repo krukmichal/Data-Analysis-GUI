@@ -1,32 +1,31 @@
 import os 
 import csv
 
-def readBasicFile(filename):
-    dataX = []
-    dataY = []
-    with open(filename, 'r') as f:
-        for line in f:
-            if line[-1] == 'n':
-                line = line[:-2]
-            values = line.split(' ')
-            dataX.append(float(values[0]))
-            dataY.append(float(values[1]))
+def readSingleRowMultipleColumns(row, X, Y):
+    X.append(float(row[0]))
+    for i in range(1,len(row)):
+        Y[i-1].append(float(row[i]))
 
-    return dataX, dataY
+def readSingleRowOneColumn(row, X, Y):
+    if len(X) == 0:
+        X.append(0)
+    else:
+        X.append(X[-1] + 1)
+
+    Y[0].append(float(row[0]))
 
 def readSingleRow(row, X, Y, isFirstLine):
     if len(row) == 1:
-        if len(X) == 0:
-            X.append(0)
-        else:
-            X.append(X[-1] + 1)
-
-    X.append(float(row[0]))
-     
-    for i in range(1,len(row)):
         if isFirstLine:
             Y.append([])
-        Y[i-1].append(float(row[i]))
+        readSingleRowOneColumn(row,X,Y)
+
+    else:
+        if isFirstLine:
+            for i in range(1,len(row)):
+                Y.append([])
+        readSingleRowMultipleColumns(row,X,Y)
+
 
 def readSpaceSeperatedFile(filename):
     X = []
@@ -34,10 +33,8 @@ def readSpaceSeperatedFile(filename):
     with open(filename, 'r') as f:
         isFirstLine = True
         for line in f:
-            if line[-1] == 'n':
-                line = line[:-2]
-            row = line.split(' ')
-            readSingleRow(row, X, Y, isFirstLine)
+            row = line.strip().split(' ')
+            readSingleRow(row,X,Y,isFirstLine)
             isFirstLine = False
     return X, Y
 
@@ -48,7 +45,6 @@ def readCsvFile(filename):
         csvreader = csv.reader(f)
         isFirstLine = True
         for row in csvreader:
-            print(row)
             readSingleRow(row, X, Y, isFirstLine)
             isFirstLine = False
     return X, Y
@@ -76,5 +72,4 @@ def readFiles(filenames):
             name = os.path.basename(filename) + str(i)
             result.append([name, X, Y[i]])
 
-    print(result)
     return result

@@ -7,9 +7,11 @@ class TrendMenu(QtWidgets.QMenu):
 
         sma = self.addAction("sma")
         ema = self.addAction("ema")
+        removePeaks = self.addAction("remove peaks")
         fft = self.addAction("fft")
         rename = self.addAction("rename")
         delete = self.addAction("delete")
 
         sma.triggered.connect(lambda: trendList.createSMAItem(item))
         ema.triggered.connect(lambda: trendList.createEMAItem(item))
+        removePeaks.triggered.connect(lambda: trendList.createRemovePeaksItem(item))

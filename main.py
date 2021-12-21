@@ -10,18 +10,10 @@ import os
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-# TODO
-# wczytywanie plikow
-# pokazywanie pozycji kursora
-# zapamietywanie srodowiska
-
-## TREND_OBJECT = TREND_PLOT + TREND_ITEM 
-
-
 def main():
     app = QtWidgets.QApplication(sys.argv)
     main = MainWindow()
-    main.resize(800, 450)
+    main.resize(1700, 800)
     main.show()
     sys.exit(app.exec_())
 

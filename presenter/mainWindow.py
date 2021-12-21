@@ -18,7 +18,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
         
-        self.setWindowTitle("title")
+        self.setWindowTitle("Data Presenter")
         self.graphs = []
 
         self.createMenuBar()
@@ -56,6 +56,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def initGraph(self):
         self.graphs.append(pg.PlotWidget())
+        self.graphs[0].setBackground('w')
+        self.graphs[0].showGrid(x = True, y = True)
         self.graphLayout.addWidget(self.graphs[0])
 
     def createMenuBar(self):
