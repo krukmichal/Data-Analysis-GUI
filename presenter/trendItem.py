@@ -13,25 +13,30 @@ class TrendItem(QtWidgets.QListWidgetItem):
         self.setFlags(self.flags() | QtCore.Qt.ItemIsUserCheckable) # CZY TO POTRZEBNE
         self.setCheckState(QtCore.Qt.Checked)
 
-        self.plotWidget = graph
+        self.graph = graph
         self.name = name
         self.color = globalConfig.setColor()
         self.trendModel = TrendModel(dataX, dataY)
 
-        self.drawPlot()
+        self.plot = None
+        self.graph.drawPlot(self)
 
         #self.showMetrics() # not used right now -> handleItemSelectionChanged do this
 
     def handleItemChanged(self):
         logging.info("state changed")
         if self.checkState() == Qt.Checked:
-            self.drawPlot()
+            self.graph.drawPlot(self)
             logging.info("checked")
         else:
-            self.plotWidget.removeItem(self.plot)
+            self.graph.removeItem(self.plot)
             logging.info("unchecked")
 
+    def removePlot(self):
+        print(self.name)
+        self.graph.removeItem(self.plot)
 
     def drawPlot(self):
-        self.plot = self.plotWidget.plot(self.trendModel.dataX, self.trendModel.dataY, pen=pg.mkPen(self.color, width = 2))
+        self.graph.drawPlot(self)
+
 

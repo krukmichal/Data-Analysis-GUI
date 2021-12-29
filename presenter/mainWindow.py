@@ -5,9 +5,12 @@ import pyqtgraph as pg
 import numpy as np
 
 from presenter.trendItem import TrendItem
-from fileReader.fileReader import readFiles
 from presenter.trendList import TrendList
 from presenter.metricList import MetricList
+from presenter.graphItem import GraphItem
+from presenter.graphLayout import GraphLayout
+
+from fileReader.fileReader import readFiles
 
 import sys
 import os
@@ -19,22 +22,18 @@ class MainWindow(QtWidgets.QMainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
         
         self.setWindowTitle("Data Presenter")
-        self.graphs = []
 
         self.createMenuBar()
         self.setGeneralView()
 
         self.connectSignals()
 
-        self.initGraph()
-        self.graphLayout.addWidget(self.graphs[0])
-
     def setGeneralView(self):
         self.mainLayout = QVBoxLayout()
         self.trendLayout = QHBoxLayout()
-        self.graphLayout = QVBoxLayout()
+        self.graphLayout = GraphLayout()
 
-        self.trendList = TrendList(self.graphs)
+        self.trendList = TrendList(self.graphLayout)
         self.trendLayout.addWidget(self.trendList)
 
         self.trendLayout.addLayout(self.graphLayout) 
@@ -53,12 +52,6 @@ class MainWindow(QtWidgets.QMainWindow):
     def handleItemSelectionChanged(self):
         item = self.trendList.selectedItems()[0]
         self.metricList.showMetrics(item)
-
-    def initGraph(self):
-        self.graphs.append(pg.PlotWidget())
-        self.graphs[0].setBackground('w')
-        self.graphs[0].showGrid(x = True, y = True)
-        self.graphLayout.addWidget(self.graphs[0])
 
     def createMenuBar(self):
         self.menu = self.menuBar()
@@ -88,4 +81,5 @@ class MainWindow(QtWidgets.QMainWindow):
                     np.array(data[1],dtype=float),
                     np.array(data[2],dtype=float),
                     data[0],
+                    self.graphLayout.graphs[0]
                     )

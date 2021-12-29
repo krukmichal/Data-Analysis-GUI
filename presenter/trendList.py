@@ -6,13 +6,12 @@ from presenter.trendItem import TrendItem
 from model import transforms
 
 class TrendList(QListWidget):
-    def __init__(self, graphs):
+    def __init__(self, graphLayout):
         super(TrendList, self).__init__()
         self.setMaximumWidth(200)
         self.itemChanged.connect(self.handleItemChanged)
         self.installEventFilter(self)
-
-        self.graphs = graphs
+        self.graphLayout = graphLayout
 
     def handleItemChanged(self, item):
         item.handleItemChanged()
@@ -30,30 +29,24 @@ class TrendList(QListWidget):
 
         return super().eventFilter(source, event)
 
-    def addTrendItem(self, dataX, dataY, name):
-        trendItem = TrendItem(self.graphs[0], dataX, dataY, name)
+    def addTrendItem(self, dataX, dataY, name, graph):
+        trendItem = TrendItem(graph, dataX, dataY, name)
         self.addItem(trendItem)
         self.setCurrentRow(self.count()-1)
 
     def createSMAItem(self, item):
         Y = transforms.calcSMA(item.trendModel.dataY, 20)
         name = item.name + "-SMA"
-        self.addTrendItem(item.trendModel.dataX.copy(), Y, name)
+        self.addTrendItem(item.trendModel.dataX.copy(), Y, name, item.graph)
 
     def createEMAItem(self, item):
         alpha = 0.1
         Y = transforms.calcEMA(item.trendModel.dataY, 20, alpha)
         name = item.name + "-EMA"
-        self.addTrendItem(item.trendModel.dataX.copy(), Y, name)
+        self.addTrendItem(item.trendModel.dataX.copy(), Y, name, item.graph)
 
     def createRemovePeaksItem(self, item):
         threshold = 1.7
         Y = transforms.removePeaks(item.trendModel.dataY, threshold)
         name = item.name + "-RP"
-        self.addTrendItem(item.trendModel.dataX.copy(), Y, name)
-
-
-
-
-
-
+        self.addTrendItem(item.trendModel.dataX.copy(), Y, name, item.graph)
