@@ -28,3 +28,5 @@ class TrendMenu(QtWidgets.QMenu):
         ema.triggered.connect(lambda: trendList.createEMAItem(item))
         removePeaks.triggered.connect(lambda: trendList.createRemovePeaksItem(item))
 
+        delete.triggered.connect(lambda: trendList.deleteTrendItem(item))
+

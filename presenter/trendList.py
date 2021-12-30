@@ -50,3 +50,8 @@ class TrendList(QListWidget):
         Y = transforms.removePeaks(item.trendModel.dataY, threshold)
         name = item.name + "-RP"
         self.addTrendItem(item.trendModel.dataX.copy(), Y, name, item.graph)
+
+    def deleteTrendItem(self, item):
+        item.removePlot()
+        index = self.indexFromItem(item)
+        self.takeItem(index.row())

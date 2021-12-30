@@ -50,6 +50,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.trendList.itemSelectionChanged.connect(self.handleItemSelectionChanged)
 
     def handleItemSelectionChanged(self):
+        if len(self.trendList.selectedItems()) == 0:
+            self.metricList.clear()
+            return
+
         item = self.trendList.selectedItems()[0]
         self.metricList.showMetrics(item)
 
