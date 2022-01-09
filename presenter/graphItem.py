@@ -1,4 +1,5 @@
 import pyqtgraph as pg
+import globalConfig as gc
 
 class GraphItem(pg.PlotWidget):
     def __init__(self):
@@ -6,14 +7,11 @@ class GraphItem(pg.PlotWidget):
 
         self.setBackground('w')
         self.showGrid(x = True, y = True)
-
-       # p1 = self.plotItem
-       # p1.setLabels(left='axis 1')
-
+        self.isShown = True
 
     def drawPlot(self, trendItem):
         trendItem.plot = self.plot(
                 trendItem.trendModel.dataX, 
                 trendItem.trendModel.dataY, 
-                pen=pg.mkPen(trendItem.color, width = 2))
+                pen=pg.mkPen(trendItem.color, width = 2), symbol=gc.symbol)
 

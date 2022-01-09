@@ -6,7 +6,6 @@ from presenter.graphItem import GraphItem
 class GraphLayout(QVBoxLayout):
     def __init__(self):
         super(GraphLayout, self).__init__()
-
         self.graphs = []
         self.initGraph()
 
@@ -14,14 +13,17 @@ class GraphLayout(QVBoxLayout):
         self.graphs.append(GraphItem())
         self.addWidget(self.graphs[-1])
 
+    def setGraphList(self, graphList):
+        self.graphList = graphList
+
     def changeGraph(self, item, i):
-        print(i)
         item.removePlot()
         item.graph = self.graphs[i]
         item.drawPlot()
 
     def newGraph(self, item):
         graphItem = GraphItem()
+        self.graphList.addNewGraph()
         self.graphs.append(graphItem)
         self.addWidget(graphItem)
 
@@ -29,3 +31,10 @@ class GraphLayout(QVBoxLayout):
         item.graph = graphItem
         graphItem.drawPlot(item)
 
+    def showGraph(self, i):
+        self.graphs[i].show()
+        self.graphs[i].isShown = True
+
+    def hideGraph(self, i):
+        self.graphs[i].hide()
+        self.graphs[i].isShown = False

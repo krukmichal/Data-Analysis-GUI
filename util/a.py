@@ -1,19 +1,25 @@
-from PyQt5 import QtWidgets, uic, QtGui
-from PyQt5.QtWidgets import QFileDialog
-from pyqtgraph import PlotWidget, plot
-import pyqtgraph as pg
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.fft import fft, fftfreq
 
-import sys
+Fs = 2000
+tstep = 1 / Fs
+f0 = 1
 
-def main():
-    app = QtWidgets.QApplication(sys.argv)
-    view = pg.GraphicsView()
-    l = pg.GraphicsLayout()
-    view.show()
-    window = QtWidgets.QWidget()
-    window.show()
-    app.exec()
+N = int(Fs / f0)
 
 
-if __name__ == "__main__":
-    main()
+t = np.linspace(0, (N-1)*tstep, N)
+fstep = Fs / N
+f = np.linspace(0, (N-1)*fstep, N)
+
+y = 1 * np.sin(2 * np.pi * f0 * t)
+
+X = np.fft.fft(y)
+X_mag = np.abs(X) / N
+print(X_mag)
+print(f)
+
+plt.plot(f,X_mag)
+plt.show()
+

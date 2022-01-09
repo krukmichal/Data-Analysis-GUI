@@ -11,6 +11,7 @@ class TrendMenu(QtWidgets.QMenu):
         ema = algorithms.addAction("EMA")
         removePeaks = algorithms.addAction("Remove Peaks")
         fft = algorithms.addAction("FFT")
+        changeResolution = algorithms.addAction("Change Resolution")
 
         changeGraph = self.addMenu("Change Graph")
         for i in range(len(trendList.graphLayout.graphs)):
@@ -21,12 +22,19 @@ class TrendMenu(QtWidgets.QMenu):
         newGraph.triggered.connect(lambda: trendList.graphLayout.newGraph(item))
 
         configure = self.addAction("Configure")
+        export = self.addMenu("Export")
+        exportTxt = export.addAction("To .txt")
+        exportCsv = export.addAction("To .csv")
+
         rename = self.addAction("Rename")
         delete = self.addAction("Delete")
 
         sma.triggered.connect(lambda: trendList.createSMAItem(item))
         ema.triggered.connect(lambda: trendList.createEMAItem(item))
         removePeaks.triggered.connect(lambda: trendList.createRemovePeaksItem(item))
-
+        fft.triggered.connect(lambda: trendList.createFFTItem(item))
+        changeResolution.triggered.connect(lambda: trendList.createNewResolutionItem(item))
         delete.triggered.connect(lambda: trendList.deleteTrendItem(item))
+        exportTxt.triggered.connect(lambda: trendList.exportItemToTxt(item))
+        exportCsv.triggered.connect(lambda: trendList.exportItemToCsv(item))
 

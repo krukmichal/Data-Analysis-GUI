@@ -1,38 +1,25 @@
-from PyQt5 import QtWidgets, uic, QtGui
-from PyQt5.QtWidgets import QFileDialog, QHBoxLayout
-from pyqtgraph import PlotWidget, plot
-import pyqtgraph as pg
+from scipy.fft import fft, fftfreq
+import numpy as np
+import matplotlib.pyplot as plt
 
-class ApplicationWindow(QtWidgets.QMainWindow):
-    def __init__(self):
-        super().__init__()
+# Number of sample points
 
-        # self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        self.setWindowTitle("Main Window")
+N = 600
 
-        self.main_widget = QtWidgets.QWidget(self)
-        self.main_widget.setFocus()
-        self.setCentralWidget(self.main_widget)
+# sample spacing
 
-        l = QtWidgets.QVBoxLayout(self.main_widget)
-        sc = MyStaticMplCanvas(width=5, height=4, dpi=100)  # just some graph
-        dc = MyDynamicMplCanvas(width=5, height=4, dpi=100) # another graph
-        l.addWidget(sc)
-        l.addWidget(dc)        
+T = 1.0 / 800.0
 
-       # Snippet 3
-        x = QtWidgets.QHBoxLayout()         # self.main_widget) # new
-        b1 = QtWidgets.QPushButton("Test1") # new
-        b2 = QtWidgets.QPushButton("Test2") # new
-        x.addWidget(b1)                     # new   + b1
-        x.addWidget(b2)                     # new   + b2
+x = np.linspace(0.0, 7, 10000)
 
-        l.addLayout(x)                                                  # <----
+y = np.sin(x)
 
-if __name__ == "__main__": 
-    import sys 
-    app = QtWidgets.QApplication(sys.argv) 
-    MainWindow = ApplicationWindow() 
-    MainWindow.show() 
-    sys.exit(app.exec_())        
+yf = fft(y)
 
+xf = fftfreq(N, T)[:N//2]
+
+plt.plot(xf, 2.0/N * np.abs(yf[0:N//2]))
+
+plt.grid()
+
+plt.show()
