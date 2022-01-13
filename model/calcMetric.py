@@ -33,3 +33,10 @@ def calcKurtosis(X, average, standardDeviation):
 
     return sum / len(X) / standardDeviation ** 4 - 3
  
+def findMin(Y):
+    return min(Y)
+
+def findMax(Y):
+    return max(Y)
+
+

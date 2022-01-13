@@ -12,15 +12,16 @@ class TrendItem(QtWidgets.QListWidgetItem):
         self.setFlags(self.flags() | QtCore.Qt.ItemIsUserCheckable) # CZY TO POTRZEBNE
         self.setCheckState(QtCore.Qt.Checked)
 
+        self.setFlags(self.flags() | QtCore.Qt.ItemIsEditable)
+
         self.graph = graph
         self.name = name
         self.color = color
         self.trendModel = TrendModel(dataX, dataY)
+    
 
         self.plot = None
         self.graph.drawPlot(self)
-
-        #self.showMetrics() # not used right now -> handleItemSelectionChanged do this
 
     def handleItemChanged(self):
         if self.checkState() == Qt.Checked:
@@ -33,5 +34,3 @@ class TrendItem(QtWidgets.QListWidgetItem):
 
     def drawPlot(self):
         self.graph.drawPlot(self)
-
-

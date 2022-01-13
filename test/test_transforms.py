@@ -5,13 +5,13 @@ def test_sma0():
     Y = [1,2,3,4,5,6]
     tY = calcSMA(Y,3)
 
-    assert np.all(tY == [1,2,2,3,4,5])
+    assert np.all(tY == [1,1.5,2,3,4,5])
 
 def test_sma1():
     Y = [2,4,6,12,8,12,16,8,4,2,0]
     tY = calcSMA(Y,4)
 
-    assert np.all(tY == [2,4,6,6,7.5,9.5,12,11,10,7.5,3.5])
+    assert np.all(tY == [2,3,4,6,7.5,9.5,12,11,10,7.5,3.5])
 
 def test_ema0():
     Y = [1,1,1,1,1,1]
@@ -27,6 +27,24 @@ def test_ema1():
         tY[i] = np.around(tY[i],2)
 
     assert np.all(tY == [1, 2.33, 2.33, 3.33])
+
+def test_compare_ema_and_sma0():
+    Y = [1,2,3,4,5]
+    tY1 = calcEMA(Y,3,0)
+    tY2 = calcSMA(Y,3)
+
+    assert np.all(tY1 == tY2)
+
+def test_compare_ema_and_sma1():
+    Y = [1.7, 2.33, 1.92, 1.41, 1.58, 5, 1.231, 12.41]
+    tY1 = calcEMA(Y,3,0)
+    tY2 = calcSMA(Y,3)
+
+    for i in range(len(Y)):
+        tY1[i] = np.around(tY1[i],4)
+        tY2[i] = np.around(tY2[i],4)
+
+    assert np.all(tY1 == tY2)
 
 def test_removePeaks0():
     Y = [0,1,2,3,4,5,4,22,5]
@@ -79,4 +97,32 @@ def test_changeResolutionLinear3():
     assert len(newX) == len(newY)
     assert np.all(newX == [1.0,1.2,1.4,1.6,1.8,2,2.2,2.4,2.6,2.8,3.0,3.2,3.4,3.6,3.8,4.0,4.2,4.4,4.6,4.8,5.0,5.2,5.4,5.6,5.8,6.0])
 
+def test_changeResolutionLinear4():
+    X = [0,1,2]
+    Y = [0,1,2]
+
+    newX, newY = changeResolutionLinear(X,Y,0.7)
+
+    print(newX)
+    print(newY)
+
+    for x in range(len(newX)):
+        newX[x] = np.around(newX[x],6)
+        newY[x] = np.around(newX[x],6)
+
+    assert np.all(newX == [0,0.7,1.4])
+    assert np.all(newY == [0,0.7,1.4])
+
+def test_changeResolutionLinear5():
+    X = [0,1]
+    Y = [0,1]
+
+    newX, newY = changeResolutionLinear(X,Y,0.7)
+
+    for x in range(len(newX)):
+        newX[x] = np.around(newX[x],6)
+        newY[x] = np.around(newX[x],6)
+
+    assert np.all(newX == [0,0.7])
+    assert np.all(newY == [0,0.7])
 

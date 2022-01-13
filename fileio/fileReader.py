@@ -49,9 +49,7 @@ def readCsvFile(filename):
     return X, Y
 
 def getFileExtension(filename):
-    print(filename)
     i = filename.rfind('.')
-    print(i)
     if (i == -1 or i > len(filename)-2):
         raise Exception('can not get file format')
     result = filename[i+1:]

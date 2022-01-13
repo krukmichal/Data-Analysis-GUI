@@ -101,16 +101,27 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.averageAction = QAction("Average", checkable=True)
         self.averageAction.setChecked(True)
+        self.averageAction.triggered.connect(partial(self.changeShownMetric, "arithmeticAverage"))
+
         self.medianAction = QAction("Median", checkable=True)
         self.medianAction.setChecked(True)
+        self.medianAction.triggered.connect(partial(self.changeShownMetric, "median"))
+
         self.variationAction = QAction("Variation", checkable=True)
         self.variationAction.setChecked(True)
+        self.variationAction.triggered.connect(partial(self.changeShownMetric, "variation"))
+
         self.standardDeviationAction = QAction("Standard Deviation", checkable=True)
         self.standardDeviationAction.setChecked(True)
+        self.standardDeviationAction.triggered.connect(partial(self.changeShownMetric, "standardDeviation"))
+
         self.kurtosisAction = QAction("Kurtosis", checkable=True)
         self.kurtosisAction.setChecked(True)
+        self.kurtosisAction.triggered.connect(partial(self.changeShownMetric, "kurtosis"))
+
         self.skewnessAction = QAction("Skewness", checkable=True)
         self.skewnessAction.setChecked(True)
+        self.skewnessAction.triggered.connect(partial(self.changeShownMetric, "skewness"))
 
         self.viewMenu.addAction(self.toggleGraphListAction)
         self.viewMenu.addAction(self.toggleTrendListAction)
@@ -122,6 +133,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.metricMenu.addAction(self.standardDeviationAction)
         self.metricMenu.addAction(self.kurtosisAction)
         self.metricMenu.addAction(self.skewnessAction)
+
+    def changeShownMetric(self, metric):
+        self.metricList.whichMetricsToShow[metric] = not self.metricList.whichMetricsToShow[metric]
+        self.handleItemSelectionChanged()
 
     def setMarkPoints(self, test):
         if self.markPoints.isChecked():
@@ -143,7 +158,6 @@ class MainWindow(QtWidgets.QMainWindow):
                 )
 
         for data in readFiles(fileDialogData[0]):
-            logging.debug(data)
             self.trendList.addTrendItem(
                     np.array(data[1],dtype=float),
                     np.array(data[2],dtype=float),

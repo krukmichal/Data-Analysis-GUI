@@ -1,33 +1,39 @@
 from PyQt5.QtWidgets import QListWidget
 from PyQt5 import QtWidgets
 import globalConfig
-import logging
 
 class MetricList(QListWidget):
     def __init__(self):
         super(MetricList, self).__init__()
         self.setMaximumHeight(30)
         self.setFlow(QListWidget.LeftToRight)
+        self.setSpacing(7)
         self.precision = 4
 
         self.whichMetricsToShow = {
+                "minValue" : True,
+                "maxValue" : True,
                 "arithmeticAverage" : True,
                 "median" : True,
                 "standardDeviation" : True,
-                "variance" : True
+                "variance" : True,
+                "kurtosis" : True,
+                "skewness" : True
                 }
 
         self.metricName = {
+                "minValue" : "Min",
+                "maxValue" : "Max",
                 "arithmeticAverage" : "Average",
                 "median" : "Median",
                 "standardDeviation" : "Standard Deviation",
-                "variance" : "Variance"
+                "variance" : "Variance",
+                "kurtosis" : "Kurtosis",
+                "skewness" : "Skewness"
                 }
 
     def showMetrics(self, item):
-        logging.info("showMetrics")
         self.clear()
-
         for key, value in self.whichMetricsToShow.items():
             if value:
                 metricItem = QtWidgets.QListWidgetItem()

@@ -26,7 +26,7 @@ class TrendMenu(QtWidgets.QMenu):
         exportTxt = export.addAction("To .txt")
         exportCsv = export.addAction("To .csv")
 
-        rename = self.addAction("Rename")
+#        rename = self.addAction("Rename")
         delete = self.addAction("Delete")
 
         sma.triggered.connect(lambda: trendList.createSMAItem(item))
@@ -37,4 +37,5 @@ class TrendMenu(QtWidgets.QMenu):
         delete.triggered.connect(lambda: trendList.deleteTrendItem(item))
         exportTxt.triggered.connect(lambda: trendList.exportItemToTxt(item))
         exportCsv.triggered.connect(lambda: trendList.exportItemToCsv(item))
+#        rename.triggered.connect(lambda: trendList.renameItem(item))
 

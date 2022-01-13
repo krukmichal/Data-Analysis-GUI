@@ -3,13 +3,11 @@ import numpy
 import random
 
 def gen_sin(x_range):
-    dataX = []
+    dataX = numpy.linspace(0,x_range, 10000)
     dataY = []
 
-    array = numpy.arange(0,x_range,0.01)
 
-    for i in array:
-        dataX.append(i)
+    for x in dataX:
         dataY.append(math.sin(i) + random.random()/3)
 
     with open("sin-noise.txt", 'w') as f:
