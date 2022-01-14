@@ -67,3 +67,21 @@ def changeResolutionLinear(X, Y, res):
         i += 1
 
     return newX, newY
+
+def cutTrend(X, Y, xMin, xMax):
+    i = 0
+    while i < len(X) and X[i] < xMin and not np.isclose(X[i], xMin, rtol=1e-05, atol=1e-08):
+        i += 1
+
+    j = i
+    while j < len(X) and X[j] < xMax and not np.isclose(X[j], xMax, rtol=1e-05, atol=1e-08):
+        j += 1
+
+    if j >= len(X) or (X[j] > xMax and not np.isclose(X[j], xMax, rtol=1e-05, atol=1e-08)):
+        return X[i:j], Y[i:j]
+    else:
+        return X[i:j+1], Y[i:j+1]
+
+
+    
+

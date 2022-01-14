@@ -14,20 +14,32 @@ class TrendList(QListWidget):
         self.installEventFilter(self)
         self.graphLayout = graphLayout
 
-        self.colors = ['r', 'b', 'g', 'y', 'c', 'k']
+        self.colors = ['red', 'green', 'blue', 'yellow', 'purple', 'pink', 'darkGreen', 'black', 'orange', 'cyan']
+        self.colorsRGB = {
+                'red' : (255,0,0),
+                'green' : (0,255,0),
+                'blue' : (0,0,255),
+                'yellow' : (255,255,0),
+                'purple' : (153,0,153),
+                'pink' : (255,51,255),
+                'darkGreen': (52,102,0),
+                'black' : (0,0,0),
+                'orange' : (205,102,0),
+                'cyan' : (51,255,255)
+                }
+
         self.currentColor = 0
 
     def setDefaultColor(self):
-        res = self.colors[self.currentColor]
+        color = self.colors[self.currentColor]
         self.currentColor = (self.currentColor + 1) % len(self.colors)
-        return res
+        return self.colorsRGB[color]
 
     def handleItemChanged(self, item):
         if item.text() == item.name:
             item.handleItemChanged()
         else:
-            item.name = item.text()
-            #rename function
+            item.renamePlot(item.text())
 
     def eventFilter(self, source, event):
         if event.type() == QEvent.ContextMenu and source is self:
@@ -43,6 +55,9 @@ class TrendList(QListWidget):
         return super().eventFilter(source, event)
 
     def addTrendItem(self, dataX, dataY, name, graph):
+        if len(dataX)  == 0:
+            return # there is no data provided
+
         trendItem = TrendItem(
                 graph, 
                 dataX, 
@@ -119,14 +134,11 @@ class TrendList(QListWidget):
         name = QFileDialog.getSaveFileName(self, 'SaveFile')[0]
         writeCsvFile(item.trendModel.dataX, item.trendModel.dataY, name)
 
-#    def renameItem(self, item):
-#        name, done = QtWidgets.QInputDialog.getText(self, "Rename", 'New name:')
-#
-#        if done:
-#            item.setText(name)
-#            item.name = name
-        
-        
+    def createCutItem(self, item):
+        startPoint, done1 = QtWidgets.QInputDialog.getDouble(self, "Cut Trend", 'Start point', 1, 0.00001, 10000000, 5)
+        endPoint, done2 = QtWidgets.QInputDialog.getDouble(self, "Cut Trend", 'End point', 1, 0.00001, 10000000, 5)
 
-
-
+        if done1 and done2:
+            X, Y = transforms.cutTrend(item.trendModel.dataX, item.trendModel.dataY, startPoint, endPoint)
+            name = item.name + "-cut-" + str(startPoint) + "-" + str(endPoint)
+            self.addTrendItem(X, Y, name, item.graph)

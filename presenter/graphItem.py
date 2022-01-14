@@ -8,10 +8,11 @@ class GraphItem(pg.PlotWidget):
         self.setBackground('w')
         self.showGrid(x = True, y = True)
         self.isShown = True
+        self.addLegend()
 
     def drawPlot(self, trendItem):
         trendItem.plot = self.plot(
                 trendItem.trendModel.dataX, 
                 trendItem.trendModel.dataY, 
-                pen=pg.mkPen(trendItem.color, width = 2), symbol=gc.symbol)
+                pen=pg.mkPen(trendItem.color, width = 2), symbol=gc.symbol, name=trendItem.name)
 

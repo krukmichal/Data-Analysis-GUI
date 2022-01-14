@@ -27,7 +27,6 @@ def calcSkewness(average, median, standardDeviation):
 
 def calcKurtosis(X, average, standardDeviation):
     sum = 0
-
     for x in X:
         sum += (x - average) ** 4
 
@@ -38,5 +37,3 @@ def findMin(Y):
 
 def findMax(Y):
     return max(Y)
-
-

@@ -126,3 +126,36 @@ def test_changeResolutionLinear5():
     assert np.all(newX == [0,0.7])
     assert np.all(newY == [0,0.7])
 
+def testCut0():
+    X = [0,1,2,3,4,5]
+    Y = [0,1,2,3,4,5]
+
+    newX, newY = cutTrend(X, Y, 1,3)
+    
+    assert newX == [1,2,3]
+    assert newY == [1,2,3]
+
+def testCut1():
+    X = [0,1,2,3,4]
+    Y = [0,1,2,3,4]
+
+    newX, newY = cutTrend(X, Y, 1,21)
+    
+    assert newX == [1,2,3,4]
+    assert newY == [1,2,3,4]
+
+def testCut2():
+    X = [0, 0.3, 0.4, 0.5, 0.7]
+    Y = [0, 1, 2, 3, 4]
+
+    newX, newY = cutTrend(X,Y,0.33, 0.62)
+    assert newX == [0.4, 0.5]
+    assert newY == [2,3]
+
+def testCut3():
+    X=[1.8,2.7,3.5,4.2]
+    Y=[1.7,2.3,2.2,2.6]
+    newX, newY = cutTrend(X,Y, 1.812, 1.823)
+    assert newX == []
+    assert newY == []
+

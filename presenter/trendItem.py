@@ -19,7 +19,6 @@ class TrendItem(QtWidgets.QListWidgetItem):
         self.color = color
         self.trendModel = TrendModel(dataX, dataY)
     
-
         self.plot = None
         self.graph.drawPlot(self)
 
@@ -34,3 +33,9 @@ class TrendItem(QtWidgets.QListWidgetItem):
 
     def drawPlot(self):
         self.graph.drawPlot(self)
+
+    def renamePlot(self, name):
+        self.name = name
+        self.removePlot()
+        self.plot.setData(x=self.trendModel.dataX, y=self.trendModel.dataY, name = self.name)
+        self.drawPlot()

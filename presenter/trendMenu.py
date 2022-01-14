@@ -12,6 +12,7 @@ class TrendMenu(QtWidgets.QMenu):
         removePeaks = algorithms.addAction("Remove Peaks")
         fft = algorithms.addAction("FFT")
         changeResolution = algorithms.addAction("Change Resolution")
+        cut = algorithms.addAction("Cut")
 
         changeGraph = self.addMenu("Change Graph")
         for i in range(len(trendList.graphLayout.graphs)):
@@ -37,5 +38,5 @@ class TrendMenu(QtWidgets.QMenu):
         delete.triggered.connect(lambda: trendList.deleteTrendItem(item))
         exportTxt.triggered.connect(lambda: trendList.exportItemToTxt(item))
         exportCsv.triggered.connect(lambda: trendList.exportItemToCsv(item))
-#        rename.triggered.connect(lambda: trendList.renameItem(item))
+        cut.triggered.connect(lambda: trendList.createCutItem(item))
 
