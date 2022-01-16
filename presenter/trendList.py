@@ -93,16 +93,6 @@ class TrendList(QListWidget):
             name = item.name + "-RP"
             self.addTrendItem(item.trendModel.dataX.copy(), Y, name, item.graph)
 
-    def checkIfEqualIntervals(self, X):
-        if len(X) > 1:
-            interval = X[1] - X[0]
-
-            for i in range(len(X) - 1):
-                if X[i+1] - X[i] != interval:
-                    return False
-
-        return True
-
     def createFFTItem(self, item):
         X, Y = transforms.calcFFT(item.trendModel.dataX, item.trendModel.dataY)
         name = item.name + "-FFT"

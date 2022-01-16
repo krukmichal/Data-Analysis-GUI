@@ -83,5 +83,6 @@ def cutTrend(X, Y, xMin, xMax):
         return X[i:j+1], Y[i:j+1]
 
 
+
     
 

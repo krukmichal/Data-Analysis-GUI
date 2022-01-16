@@ -13,6 +13,7 @@ class MetricList(QListWidget):
         self.whichMetricsToShow = {
                 "minValue" : True,
                 "maxValue" : True,
+                "peakToPeak" : True,
                 "arithmeticAverage" : True,
                 "median" : True,
                 "standardDeviation" : True,
@@ -24,6 +25,7 @@ class MetricList(QListWidget):
         self.metricName = {
                 "minValue" : "Min",
                 "maxValue" : "Max",
+                "peakToPeak" : "Peak to Peak",
                 "arithmeticAverage" : "Average",
                 "median" : "Median",
                 "standardDeviation" : "Standard Deviation",

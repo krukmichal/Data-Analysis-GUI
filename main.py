@@ -7,8 +7,6 @@ from presenter.mainWindow import MainWindow
 
 import sys
 import os
-import logging
-logging.basicConfig(level=logging.DEBUG)
 
 def main():
     app = QtWidgets.QApplication(sys.argv)

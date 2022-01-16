@@ -1,5 +1,6 @@
 import model.calcMetric as calcMetric
 import logging
+import numpy as np
 
 class TrendModel():
     def __init__(self, X, Y):
@@ -12,6 +13,7 @@ class TrendModel():
     def calcAllMetrics(self):
         self.metric["minValue"] = calcMetric.findMin(self.dataY)
         self.metric["maxValue"] = calcMetric.findMax(self.dataY)
+        self.metric["peakToPeak"] = calcMetric.peakToPeak(self.metric["maxValue"], self.metric["minValue"])
         self.metric["arithmeticAverage"] = calcMetric.calcArithmeticAverage(self.dataY)
         self.metric["median"] = calcMetric.calcMedian(self.dataY)
         self.metric["variance"] = calcMetric.calcVariance(self.dataY, self.metric["arithmeticAverage"])
