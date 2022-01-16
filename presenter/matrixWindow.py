@@ -1,8 +1,10 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import QDialog, QTableWidget, QVBoxLayout, QTableWidgetItem, QLabel
+from PyQt5.QtGui import QColor, QBrush
 
 from model.calcMetric import covarianceMatrix
 from model.calcMetric import correlationMatrix
+import math
 
 
 class MatrixWindow(QDialog):
@@ -10,6 +12,7 @@ class MatrixWindow(QDialog):
         super().__init__()
 
         self.setWindowTitle(statsType)
+        self.statsType = statsType
 
         data = None
         if statsType == "correlation":
@@ -27,7 +30,11 @@ class MatrixWindow(QDialog):
 
         for i in range(len(data)):
             for j in range(len(data)):
-                self.table.setItem(i,j,QTableWidgetItem(str(data[i][j])))
+                if i != j:
+                    color = self.setColor(data[i][j])
+                    item = QTableWidgetItem(str(data[i][j]))
+                    item.setForeground(QBrush(color))
+                    self.table.setItem(i,j,item)
 
         self.table.resizeColumnsToContents()
         self.table.resizeRowsToContents()
@@ -35,3 +42,16 @@ class MatrixWindow(QDialog):
 
         self.setLayout(self.layout)
         self.resize(1000, 600)
+
+    def setColor(self, value):
+        if self.statsType == "covariance" or math.isnan(value):
+            return QColor(0,0,0)
+
+        if value < 0:
+            return QColor(0,0,int(-1 * value*255))
+
+        return QColor(int(value*255),0,0)
+
+        
+
+        

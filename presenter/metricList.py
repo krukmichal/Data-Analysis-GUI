@@ -34,11 +34,13 @@ class MetricList(QListWidget):
                 "skewness" : "Skewness"
                 }
 
-    def showMetrics(self, item):
+    def showMetrics(self, trendModel):
         self.clear()
         for key, value in self.whichMetricsToShow.items():
             if value:
                 metricItem = QtWidgets.QListWidgetItem()
-                name = self.metricName[key] + ": " + str(round(item.trendModel.metric[key], self.precision))
+                name = self.metricName[key] + ": " + str(round(trendModel.metric[key], self.precision))
                 metricItem.setText(name)
                 self.addItem(metricItem)
+    
+

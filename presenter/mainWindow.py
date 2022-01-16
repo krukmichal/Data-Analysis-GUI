@@ -48,6 +48,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.groupBox.setGraphLayout(self.graphLayout)
 
         self.trendList = TrendList(self.graphLayout)
+        self.groupBox.setTrendList(self.trendList)
         self.trendLayout.addWidget(self.trendList)
 
         self.trendLayout.addLayout(self.graphLayout) 
@@ -58,6 +59,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.mainLayout.addWidget(self.groupBox)
 
         self.metricList = MetricList()
+        self.groupBox.setMetricList(self.metricList)
         self.mainLayout.addWidget(self.metricList);
 
         self.window = QtWidgets.QWidget(self)
@@ -73,7 +75,7 @@ class MainWindow(QtWidgets.QMainWindow):
             return
 
         item = self.trendList.selectedItems()[0]
-        self.metricList.showMetrics(item)
+        self.metricList.showMetrics(item.trendModel)
 
     def createMenuBar(self):
         self.menu = self.menuBar()
