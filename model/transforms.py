@@ -1,20 +1,20 @@
 import numpy as np
 from scipy.fft import fft, fftfreq
 
-def calcEMA(Y,N,a):
+def calcEMA(Y,N,alpha):
     newY = []
-    
+
     for i in range(len(Y)):
         curSum = 0
         curDivisor = 0
         for j in range(min(N, i+1)):
-            weight = (1 - a) ** j
+            weight = (1 - alpha) ** j
             curSum += weight * Y[i-j]
-            curDivisor += weight 
+            curDivisor += weight
 
         newY.append(curSum / curDivisor)
 
-    return newY
+    return np.array(newY)
 
 def calcSMA(Y, N):
     newY = np.cumsum(Y, dtype = float)
@@ -23,7 +23,7 @@ def calcSMA(Y, N):
     for i in range(N-1):
         newY[i] = newY[i]/(i+1)
 
-    return newY
+    return np.array(newY)
 
 def removePeaks(Y, threshold):
     newY = np.array(Y, dtype=float)
@@ -32,13 +32,14 @@ def removePeaks(Y, threshold):
         if diff > threshold:
             newY[i] = (newY[i+1] + newY[i-1]) / 2
 
-    return newY
+    return np.array(newY)
 
 def calcFFT(X, Y):
     T = X[1] - X[0]
     N = len(X)
 
     yf = np.abs(fft(Y))[0:N//2] / N
+    print (fftfreq(N,T))
     xf = fftfreq(N, T)[:N//2]
 
     return xf, yf
@@ -48,14 +49,14 @@ def changeResolutionLinear(X, Y, res):
     newY = []
 
     x = X[0]
-    while x < X[-1] or np.isclose(x, X[-1], rtol=1e-05, atol=1e-08, equal_nan=False):
+    while x < X[-1] or np.isclose(x, X[-1], equal_nan=False):
         newX.append(x)
         x += res
 
     j = 0
     i = 0
     while i < len(newX):
-        if np.isclose(newX[i], X[j], rtol=1e-05, atol=1e-08, equal_nan=False):
+        if np.isclose(newX[i], X[j], equal_nan=False):
             newY.append(Y[j])
             j += 1
         elif newX[i] > X[j]:
@@ -63,26 +64,21 @@ def changeResolutionLinear(X, Y, res):
             i -= 1
         else:
             newval = (Y[j] - Y[j-1])/(X[j] - X[j-1]) * (newX[i] - X[j-1]) + Y[j-1]
-            newY.append(newval) 
+            newY.append(newval)
         i += 1
 
-    return newX, newY
+    return np.array(newX), np.array(newY)
 
 def cutTrend(X, Y, xMin, xMax):
     i = 0
-    while i < len(X) and X[i] < xMin and not np.isclose(X[i], xMin, rtol=1e-05, atol=1e-08):
+    while i < len(X) and X[i] < xMin and not np.isclose(X[i], xMin):
         i += 1
 
     j = i
-    while j < len(X) and X[j] < xMax and not np.isclose(X[j], xMax, rtol=1e-05, atol=1e-08):
+    while j < len(X) and X[j] < xMax and not np.isclose(X[j], xMax):
         j += 1
 
-    if j >= len(X) or (X[j] > xMax and not np.isclose(X[j], xMax, rtol=1e-05, atol=1e-08)):
+    if j >= len(X) or (X[j] > xMax and not np.isclose(X[j], xMax)):
         return X[i:j], Y[i:j]
-    else:
-        return X[i:j+1], Y[i:j+1]
 
-
-
-    
-
+    return X[i:j+1], Y[i:j+1]

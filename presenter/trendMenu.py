@@ -22,13 +22,13 @@ class TrendMenu(QtWidgets.QMenu):
         newGraph = changeGraph.addAction("New Graph")
         newGraph.triggered.connect(lambda: trendList.graphLayout.newGraph(item))
 
-        configure = self.addAction("Configure")
+        changeColor = self.addAction("Change Color")
         export = self.addMenu("Export")
         exportTxt = export.addAction("To .txt")
         exportCsv = export.addAction("To .csv")
 
-#        rename = self.addAction("Rename")
         delete = self.addAction("Delete")
+        rename = self.addAction("Rename")
 
         sma.triggered.connect(lambda: trendList.createSMAItem(item))
         ema.triggered.connect(lambda: trendList.createEMAItem(item))
@@ -39,4 +39,6 @@ class TrendMenu(QtWidgets.QMenu):
         exportTxt.triggered.connect(lambda: trendList.exportItemToTxt(item))
         exportCsv.triggered.connect(lambda: trendList.exportItemToCsv(item))
         cut.triggered.connect(lambda: trendList.createCutItem(item))
+        rename.triggered.connect(lambda: trendList.renameItem(item))
+        changeColor.triggered.connect(lambda: trendList.changeColor(item))
 

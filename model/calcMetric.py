@@ -2,10 +2,10 @@ import math
 import numpy as np
 
 def calcArithmeticAverage(X):
-    result = 0 
+    result = 0
     for x in X:
         result += x
-    return result / len(X);
+    return result / len(X)
 
 def calcMedian(X):
     Y = X.copy()
@@ -27,13 +27,12 @@ def calcSkewness(average, median, standardDeviation):
     return 3 * (average - median) / standardDeviation
 
 def calcKurtosis(X, average, standardDeviation):
-    return 0
-    sum = 0
+    sumX = 0
     for x in X:
-        sum += (x - average) ** 4
+        sumX += (x - average) ** 4
 
-    return sum / len(X) / standardDeviation ** 4 - 3
- 
+    return sumX / len(X) / standardDeviation ** 4 - 3
+
 def findMin(Y):
     return min(Y)
 
@@ -42,9 +41,12 @@ def findMax(Y):
 
 def covarianceMatrix(X):
     return np.cov(X, bias=True)
-    
+
 def correlationMatrix(X):
     return np.corrcoef(X)
 
 def peakToPeak(maxVal, minVal):
     return maxVal - minVal
+
+def calcRMS(X):
+    return np.sqrt(np.mean(X**2))

@@ -1,5 +1,6 @@
 from model.calcMetric import *
 import numpy as np
+import math
 
 def test_calcMedian():
     X = np.array([2,1,2])
@@ -61,3 +62,10 @@ def test_maxValue():
     Y = [-3,2,55,12,1,1,1,1,2,5,2,99]
     assert findMax(Y) == 99
 
+def test_calcRMS0():
+    Y = np.array([1,1,1])
+    assert calcArithmeticAverage(Y) == calcRMS(Y)
+
+def test_calcRMS1():
+    Y = np.array([1,2,3])
+    assert calcRMS(Y) == math.sqrt((1+4+9)/3)

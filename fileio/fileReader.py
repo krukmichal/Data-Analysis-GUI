@@ -1,4 +1,4 @@
-import os 
+import os
 import csv
 
 def readSingleRowMultipleColumns(row, X, Y):
@@ -22,14 +22,14 @@ def readSingleRow(row, X, Y, isFirstLine):
 
     else:
         if isFirstLine:
-            for i in range(1,len(row)):
+            for _ in range(1,len(row)):
                 Y.append([])
         readSingleRowMultipleColumns(row,X,Y)
 
 def readSpaceSeperatedFile(filename):
     X = []
     Y = []
-    with open(filename, 'r') as f:
+    with open(filename, 'r', encoding='utf-8') as f:
         isFirstLine = True
         for line in f:
             row = line.strip().split(' ')
@@ -40,7 +40,7 @@ def readSpaceSeperatedFile(filename):
 def readCsvFile(filename):
     X = []
     Y = []
-    with open(filename, 'r') as f:
+    with open(filename, 'r', encoding='utf-8') as f:
         csvreader = csv.reader(f)
         isFirstLine = True
         for row in csvreader:
@@ -54,7 +54,7 @@ def getFileExtension(filename):
         raise Exception('can not get file format')
     result = filename[i+1:]
 
-    if result != "txt" and result != "csv":
+    if result not in ('txt', 'csv'):
         raise Exception('wrong file format')
 
     return result

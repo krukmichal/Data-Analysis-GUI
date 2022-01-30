@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QListWidget, QMessageBox, QFileDialog
+from PyQt5.QtWidgets import QListWidget, QMessageBox, QFileDialog, QLineEdit
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QEvent
 from presenter.trendMenu import TrendMenu
@@ -9,7 +9,7 @@ from fileio.fileWriter import *
 class TrendList(QListWidget):
     def __init__(self, graphLayout):
         super(TrendList, self).__init__()
-        self.setMaximumWidth(200)
+        self.setMaximumWidth(250)
         self.itemChanged.connect(self.handleItemChanged)
         self.installEventFilter(self)
         self.graphLayout = graphLayout
@@ -36,10 +36,7 @@ class TrendList(QListWidget):
         return self.colorsRGB[color]
 
     def handleItemChanged(self, item):
-        if item.text() == item.name:
-            item.handleItemChanged()
-        else:
-            item.renamePlot(item.text())
+        item.handleItemChanged()
 
     def eventFilter(self, source, event):
         if event.type() == QEvent.ContextMenu and source is self:
@@ -132,3 +129,21 @@ class TrendList(QListWidget):
             X, Y = transforms.cutTrend(item.trendModel.dataX, item.trendModel.dataY, startPoint, endPoint)
             name = item.name + "-cut-" + str(startPoint) + "-" + str(endPoint)
             self.addTrendItem(X, Y, name, item.graph)
+
+    def renameItem(self, item):
+        newName, done = QtWidgets.QInputDialog.getText(self, "Rename", 'New name:', QLineEdit.Normal, item.name)
+
+        if done:
+            item.renamePlot(newName)
+            self.blockSignals(True)
+            item.setText(newName) 
+            self.blockSignals(False)
+
+    def changeColor(self, item):
+        color, done = QtWidgets.QInputDialog.getItem(self, "Change Color", "Color:", self.colors, 0, False)
+
+        if done:
+            item.changeColor(self.colorsRGB[color])
+
+
+

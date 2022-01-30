@@ -12,7 +12,7 @@ def checkIfSameData(X,Y):
 
 
 def binSearch(data, val):
-    l = 0 
+    l = 0
     r = len(data) - 1
 
     res = l
@@ -29,3 +29,19 @@ def binSearch(data, val):
             res = m
 
     return res
+
+def findLeftRightIndices(X, value):
+    if value <= X[0] or value >= X[-1]:
+        return (None, None)
+
+    result = np.searchsorted(X, [value], side='right')[0]
+    return (result-1, result)
+    
+
+def interpolate(X, Y, point):
+    left, right = findLeftRightIndices(X, point)
+
+    if left == None:
+        return None
+
+    return (Y[right] - Y[left])/(X[right] - X[left])*(point - X[left]) + Y[left]

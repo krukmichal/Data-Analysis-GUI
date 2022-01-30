@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt
 from model.transforms import cutTrend
 from model.trendModel import TrendModel 
 
-class GroupBox(QGroupBox):
+class ToolPanel(QGroupBox):
     def __init__(self):
         super().__init__()
         self.layout = QHBoxLayout()

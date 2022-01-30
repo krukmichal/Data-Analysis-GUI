@@ -4,20 +4,21 @@ from PyQt5.QtWidgets import QVBoxLayout
 from presenter.graphItem import GraphItem
 
 class GraphLayout(QVBoxLayout):
-    def __init__(self, groupBox):
+    def __init__(self, toolPanel):
         super(GraphLayout, self).__init__()
-
-        self.groupBox = groupBox
-
+        self.toolPanel = toolPanel
         self.graphs = []
-        self.initGraph()
 
     def initGraph(self):
-        self.graphs.append(GraphItem(self.graphs, self.groupBox))
+        self.graphs.append(GraphItem(self.graphs, self.toolPanel, self.trendList))
         self.addWidget(self.graphs[-1])
 
     def setGraphList(self, graphList):
         self.graphList = graphList
+
+    def setTrendList(self, trendList):
+        self.trendList = trendList
+        self.initGraph()
 
     def changeGraph(self, item, i):
         item.removePlot()
@@ -25,7 +26,7 @@ class GraphLayout(QVBoxLayout):
         item.drawPlot()
 
     def newGraph(self, item):
-        graphItem = GraphItem(self.graphs, self.groupBox)
+        graphItem = GraphItem(self.graphs, self.toolPanel, self.trendList)
         self.graphList.addNewGraph()
         self.graphs.append(graphItem)
         self.addWidget(graphItem)

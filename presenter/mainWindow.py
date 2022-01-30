@@ -15,7 +15,7 @@ from presenter.graphItem import GraphItem
 from presenter.graphLayout import GraphLayout
 from presenter.graphList import GraphList
 from presenter.matrixWindow import MatrixWindow
-from presenter.groupBox import GroupBox
+from presenter.toolPanel import ToolPanel
 from fileio.fileReader import readFiles
 
 from model.util import checkIfSameData
@@ -37,29 +37,31 @@ class MainWindow(QtWidgets.QMainWindow):
         self.connectSignals()
 
     def setGeneralView(self):
-        self.groupBox = GroupBox()
+        self.toolPanel = ToolPanel()
 
         self.mainLayout = QVBoxLayout()
         self.trendLayout = QHBoxLayout()
-        self.graphLayout = GraphLayout(self.groupBox)
+        self.graphLayout = GraphLayout(self.toolPanel)
         self.graphList = GraphList(self.graphLayout)
         self.graphLayout.setGraphList(self.graphList)
 
-        self.groupBox.setGraphLayout(self.graphLayout)
+        self.toolPanel.setGraphLayout(self.graphLayout)
 
         self.trendList = TrendList(self.graphLayout)
-        self.groupBox.setTrendList(self.trendList)
+        self.toolPanel.setTrendList(self.trendList)
         self.trendLayout.addWidget(self.trendList)
+
+        self.graphLayout.setTrendList(self.trendList)
 
         self.trendLayout.addLayout(self.graphLayout) 
         self.mainLayout.addLayout(self.trendLayout)
 
         self.trendLayout.addWidget(self.graphList)
 
-        self.mainLayout.addWidget(self.groupBox)
+        self.mainLayout.addWidget(self.toolPanel)
 
         self.metricList = MetricList()
-        self.groupBox.setMetricList(self.metricList)
+        self.toolPanel.setMetricList(self.metricList)
         self.mainLayout.addWidget(self.metricList);
 
         self.window = QtWidgets.QWidget(self)
@@ -104,13 +106,22 @@ class MainWindow(QtWidgets.QMainWindow):
         self.toggleMetricListAction.setChecked(True)
         self.toggleMetricListAction.triggered.connect(lambda: self.toggleWidget(self.metricList))
 
-        self.toggleGroupBoxAction = QAction("Group Box", checkable=True)
-        self.toggleGroupBoxAction.setChecked(True)
-        self.toggleGroupBoxAction.triggered.connect(lambda: self.toggleWidget(self.groupBox))
+        self.toggleToolPanelAction = QAction("Group Box", checkable=True)
+        self.toggleToolPanelAction.setChecked(True)
+        self.toggleToolPanelAction.triggered.connect(lambda: self.toggleWidget(self.toolPanel))
 
         self.markPoints = QAction("Mark Points", checkable=True)
         self.markPoints.triggered.connect(self.setMarkPoints)
         self.configureMenu.addAction(self.markPoints)
+
+        self.syncXRangeAction = QAction("Sync x Range", checkable=True)
+        self.syncXRangeAction.setChecked(True)
+        self.syncXRangeAction.triggered.connect(self.setSyncXRange)
+        self.configureMenu.addAction(self.syncXRangeAction)
+
+        self.precisionAction = QAction("Precision")
+        self.precisionAction.triggered.connect(self.setPrecision)
+        self.configureMenu.addAction(self.precisionAction)
 
         self.minAction = QAction("Min Value", checkable=True)
         self.minAction.setChecked(True)
@@ -132,6 +143,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.medianAction.setChecked(True)
         self.medianAction.triggered.connect(partial(self.changeShownMetric, "median"))
 
+        self.rmsAction = QAction("Rms", checkable=True)
+        self.rmsAction.setChecked(True)
+        self.rmsAction.triggered.connect(partial(self.changeShownMetric, "rms"))
+
         self.variationAction = QAction("Variation", checkable=True)
         self.variationAction.setChecked(True)
         self.variationAction.triggered.connect(partial(self.changeShownMetric, "variation"))
@@ -151,10 +166,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.viewMenu.addAction(self.toggleGraphListAction)
         self.viewMenu.addAction(self.toggleTrendListAction)
         self.viewMenu.addAction(self.toggleMetricListAction)
-        self.viewMenu.addAction(self.toggleGroupBoxAction)
+        self.viewMenu.addAction(self.toggleToolPanelAction)
 
         self.metricMenu.addAction(self.minAction)
         self.metricMenu.addAction(self.maxAction)
+        self.metricMenu.addAction(self.rmsAction)
         self.metricMenu.addAction(self.ptpAction)
         self.metricMenu.addAction(self.averageAction)
         self.metricMenu.addAction(self.medianAction)
@@ -179,7 +195,7 @@ class MainWindow(QtWidgets.QMainWindow):
         for i in range(self.trendList.count()):
             if self.trendList.item(i).checkState() == Qt.Checked:
                 dataY.append(self.trendList.item(i).trendModel.dataY)
-                names.append(self.trendList.item(i).text())
+                names.append(self.trendList.item(i).name)
                 indices.append(i)
 
         if len(indices) < 2:
@@ -205,17 +221,29 @@ class MainWindow(QtWidgets.QMainWindow):
         self.metricList.whichMetricsToShow[metric] = not self.metricList.whichMetricsToShow[metric]
         self.handleItemSelectionChanged()
 
-    def setMarkPoints(self, test):
+    def setMarkPoints(self):
         if self.markPoints.isChecked():
             gc.symbol = 'o'
         else:
             gc.symbol = None
+
+    def setSyncXRange(self):
+        if self.syncXRangeAction.isChecked():
+            gc.syncXRange = True
+        else:
+            gc.syncXRange = False
 
     def toggleWidget(self, widget):
         if widget.isHidden():
             widget.show()
         else:
             widget.hide()
+
+    def setPrecision(self):
+        prec, done = QtWidgets.QInputDialog.getInt(self, "Precision", "Set precision:", gc.precision, 1, 6)
+
+        if done:
+            gc.precision = prec
 
     def browseFiles(self):
         fileDialogData = QFileDialog.getOpenFileNames(
@@ -232,5 +260,6 @@ class MainWindow(QtWidgets.QMainWindow):
                         )
         except Exception as e: 
             msgBox = QMessageBox()
-            msgBox.setText("Error while reading files " + str(e))
+            msgBox.setWindowTitle("Error")
+            msgBox.setText("Error while reading files: " + str(e))
             msgBox.exec_()
