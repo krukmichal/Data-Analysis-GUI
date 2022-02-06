@@ -28,8 +28,4 @@ class TrendModel():
                 self.metric["median"],
                 self.metric["standardDeviation"]
                 )
-        self.metric["kurtosis"] = calcMetric.calcKurtosis(
-                self.dataY,
-                self.metric["arithmeticAverage"],
-                self.metric["standardDeviation"]
-                )
+        self.metric["kurtosis"] = calcMetric.calcKurtosis(self.dataY)

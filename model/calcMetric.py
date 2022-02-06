@@ -1,6 +1,8 @@
 import math
 import numpy as np
 
+from scipy import stats
+
 def calcArithmeticAverage(X):
     result = 0
     for x in X:
@@ -26,12 +28,8 @@ def calcVariance(X, average):
 def calcSkewness(average, median, standardDeviation):
     return 3 * (average - median) / standardDeviation
 
-def calcKurtosis(X, average, standardDeviation):
-    sumX = 0
-    for x in X:
-        sumX += (x - average) ** 4
-
-    return sumX / len(X) / standardDeviation ** 4 - 3
+def calcKurtosis(X):
+    return stats.kurtosis(X, fisher=False)
 
 def findMin(Y):
     return min(Y)
@@ -50,3 +48,8 @@ def peakToPeak(maxVal, minVal):
 
 def calcRMS(X):
     return np.sqrt(np.mean(X**2))
+
+if __name__ == "__main__":
+    Y = [55, 78, 65, 98, 97, 60, 67, 65, 83, 65]
+    print(Y)
+    print(calcKurtosis(Y))

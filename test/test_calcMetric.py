@@ -45,14 +45,8 @@ def test_calcSkewness():
     assert result == 0
     
 def test_calcKurtosis():
-    X = np.array([1,2,3,4,5,6,])
-
-    mean = calcArithmeticAverage(X)
-    median = calcMedian(X)
-    variance = calcVariance(X, mean)
-    standardDeviation = calcStandardDeviation(variance)
-    result = calcKurtosis(X, mean, standardDeviation)
-    assert result == -1.2
+    X = np.array([55, 78, 65, 98, 97, 60, 67, 65, 83, 65])
+    assert np.isclose(calcKurtosis(X), 2.0453729382893178)
 
 def test_minValue():
     Y = [1,2,65,1,45,0,1,6,54]
