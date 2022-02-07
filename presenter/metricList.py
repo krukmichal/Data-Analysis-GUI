@@ -40,7 +40,9 @@ class MetricList(QListWidget):
         for key, value in self.whichMetricsToShow.items():
             if value:
                 metricItem = QtWidgets.QListWidgetItem()
-                name = self.metricName[key] + ": " + str(round(trendModel.metric[key], gc.precision))
+                name = None
+                if trendModel.metric[key] != None:
+                    name = self.metricName[key] + ": " + str(round(trendModel.metric[key], gc.precision))
                 metricItem.setText(name)
                 self.addItem(metricItem)
     

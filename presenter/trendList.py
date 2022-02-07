@@ -115,11 +115,13 @@ class TrendList(QListWidget):
 
     def exportItemToTxt(self, item):
         name = QFileDialog.getSaveFileName(self, 'SaveFile')[0]
-        writeTxtFile(item.trendModel.dataX, item.trendModel.dataY, name)
+        if name != "":
+            writeTxtFile(item.trendModel.dataX, item.trendModel.dataY, name)
         
     def exportItemToCsv(self, item):
         name = QFileDialog.getSaveFileName(self, 'SaveFile')[0]
-        writeCsvFile(item.trendModel.dataX, item.trendModel.dataY, name)
+        if name != "":
+            writeCsvFile(item.trendModel.dataX, item.trendModel.dataY, name)
 
     def createCutItem(self, item):
         startPoint, done1 = QtWidgets.QInputDialog.getDouble(self, "Cut Trend", 'Start point', 1, 0.00001, 10000000, 5)

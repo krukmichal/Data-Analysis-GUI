@@ -26,6 +26,8 @@ def calcVariance(X, average):
     return res / len(X)
 
 def calcSkewness(average, median, standardDeviation):
+    if np.isclose(standardDeviation, 0):
+        return None
     return 3 * (average - median) / standardDeviation
 
 def calcKurtosis(X):
